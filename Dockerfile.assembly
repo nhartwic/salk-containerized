@@ -1,0 +1,114 @@
+{
+    "reads": "Jicama.ont_WGS.S081.fastq.gz",
+    "sr1": "Perosus.ill_WGS.collab.R1.fastq.gz",
+    "sr2": "Perosus.ill_WGS.collab.R2.fastq.gz",
+    "basename": "Jicama.v1",
+    "genome_size": "500M",
+    "profile": "medium",
+    "grouping": "split",
+    "opts": {
+        "overlap": "",
+        "miniasm": "",
+        "flye": "",
+        "wtdbg2": "",
+        "wtpoa-cns": "",
+        "minimap2_racon": "-I 16G",
+        "racon": "",
+        "medaka": "",
+        "minimap2_pilon": "-I 16G",
+        "pilon": "--fix bases",
+        "busco": "",
+        "spades": "",
+        "minimap2_rs": "-I 16G",
+        "rs": ""
+    },
+    "cpu_assembly": 32,
+    "cpu_polish": 32,
+    "mem_assembly": 240000,
+    "mem_polish": 120000
+}
+FROM condaforge/mambaforge:latest
+LABEL io.github.snakemake.containerized="true"
+LABEL io.github.snakemake.conda_env_hash="c7b0d6b56ea87e50425406bb177a4c48d0219722863db114d18a9afe0d746d8c"
+
+# Step 1: Retrieve conda environments
+
+# Conda environment:
+#   source: envs/busco.yml
+#   prefix: /conda-envs/d953ec62a74eda759247fd41ebac6950
+#   name: busco
+#   channels:
+#     - conda-forge
+#     - bioconda
+#     - defaults
+#   dependencies:
+#     - busco == 5.2.2
+RUN mkdir -p /conda-envs/d953ec62a74eda759247fd41ebac6950
+COPY envs/busco.yml /conda-envs/d953ec62a74eda759247fd41ebac6950/environment.yaml
+
+# Conda environment:
+#   source: envs/flye.yml
+#   prefix: /conda-envs/7e2386147a1df363ea2e149ded08abdf
+#   name: busco
+#   channels:
+#     - conda-forge
+#     - bioconda
+#     - defaults
+#   dependencies:
+#     - flye == 2.8.3
+RUN mkdir -p /conda-envs/7e2386147a1df363ea2e149ded08abdf
+COPY envs/flye.yml /conda-envs/7e2386147a1df363ea2e149ded08abdf/environment.yaml
+
+# Conda environment:
+#   source: envs/mini.yml
+#   prefix: /conda-envs/2b00d729406c09d5f1e2da89a4b9ad02
+#   name: mini
+#   channels:
+#     - conda-forge
+#     - bioconda
+#     - defaults
+#   dependencies:
+#     - medaka == 1.4.3
+#     - pilon == 1.24
+#     - racon == 1.4.20
+#     - minimap2 == 2.21
+#     - miniasm == 0.3_r179
+#     - samtools
+#     - purge_haplotigs
+RUN mkdir -p /conda-envs/2b00d729406c09d5f1e2da89a4b9ad02
+COPY envs/mini.yml /conda-envs/2b00d729406c09d5f1e2da89a4b9ad02/environment.yaml
+
+# Conda environment:
+#   source: envs/spades.yml
+#   prefix: /conda-envs/e80d9865919491b14955c31689aec7da
+#   name: busco
+#   channels:
+#     - conda-forge
+#     - bioconda
+#     - defaults
+#   dependencies:
+#     - spades == 3.15.2
+RUN mkdir -p /conda-envs/e80d9865919491b14955c31689aec7da
+COPY envs/spades.yml /conda-envs/e80d9865919491b14955c31689aec7da/environment.yaml
+
+# Conda environment:
+#   source: envs/wtdbg.yml
+#   prefix: /conda-envs/55fa03f14dd730b77f8875ed0bfe7f51
+#   name: busco
+#   channels:
+#     - conda-forge
+#     - bioconda
+#     - defaults
+#   dependencies:
+#     - wtdbg == 2.5
+RUN mkdir -p /conda-envs/55fa03f14dd730b77f8875ed0bfe7f51
+COPY envs/wtdbg.yml /conda-envs/55fa03f14dd730b77f8875ed0bfe7f51/environment.yaml
+
+# Step 2: Generate conda environments
+
+RUN mamba env create --prefix /conda-envs/d953ec62a74eda759247fd41ebac6950 --file /conda-envs/d953ec62a74eda759247fd41ebac6950/environment.yaml && \
+    mamba env create --prefix /conda-envs/7e2386147a1df363ea2e149ded08abdf --file /conda-envs/7e2386147a1df363ea2e149ded08abdf/environment.yaml && \
+    mamba env create --prefix /conda-envs/2b00d729406c09d5f1e2da89a4b9ad02 --file /conda-envs/2b00d729406c09d5f1e2da89a4b9ad02/environment.yaml && \
+    mamba env create --prefix /conda-envs/e80d9865919491b14955c31689aec7da --file /conda-envs/e80d9865919491b14955c31689aec7da/environment.yaml && \
+    mamba env create --prefix /conda-envs/55fa03f14dd730b77f8875ed0bfe7f51 --file /conda-envs/55fa03f14dd730b77f8875ed0bfe7f51/environment.yaml && \
+    mamba clean --all -y

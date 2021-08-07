@@ -1,0 +1,7 @@
+name: busco
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - flye == 2.8.3
