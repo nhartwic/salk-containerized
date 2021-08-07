@@ -1,32 +1,3 @@
-{
-    "reads": "Jicama.ont_WGS.S081.fastq.gz",
-    "sr1": "Perosus.ill_WGS.collab.R1.fastq.gz",
-    "sr2": "Perosus.ill_WGS.collab.R2.fastq.gz",
-    "basename": "Jicama.v1",
-    "genome_size": "500M",
-    "profile": "medium",
-    "grouping": "split",
-    "opts": {
-        "overlap": "",
-        "miniasm": "",
-        "flye": "",
-        "wtdbg2": "",
-        "wtpoa-cns": "",
-        "minimap2_racon": "-I 16G",
-        "racon": "",
-        "medaka": "",
-        "minimap2_pilon": "-I 16G",
-        "pilon": "--fix bases",
-        "busco": "",
-        "spades": "",
-        "minimap2_rs": "-I 16G",
-        "rs": ""
-    },
-    "cpu_assembly": 32,
-    "cpu_polish": 32,
-    "mem_assembly": 240000,
-    "mem_polish": 120000
-}
 FROM condaforge/mambaforge:latest
 LABEL io.github.snakemake.containerized="true"
 LABEL io.github.snakemake.conda_env_hash="c7b0d6b56ea87e50425406bb177a4c48d0219722863db114d18a9afe0d746d8c"
