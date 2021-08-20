@@ -1,0 +1,39 @@
+FROM condaforge/mambaforge:latest
+LABEL io.github.snakemake.containerized="true"
+LABEL io.github.snakemake.conda_env_hash="8eea06161935a86a9d07ff5de44d79371fae31d3c310b75e4b31909aaab29efb"
+
+# Step 1: Retrieve conda environments
+
+# Conda environment:
+#   source: envs/busco_trees.yml
+#   prefix: /conda-envs/0e928867865a33c30f5b56c59e4b2684
+#   channels:
+#     - conda-forge
+#     - bioconda
+#     - defaults
+#   dependencies:
+#     - busco
+#     - mafft
+#     - perl-bioperl
+#     - raxml
+RUN mkdir -p /conda-envs/0e928867865a33c30f5b56c59e4b2684
+COPY envs/busco_trees.yml /conda-envs/0e928867865a33c30f5b56c59e4b2684/environment.yaml
+
+# Step 2: Generate conda environments
+
+RUN mamba env create --prefix /conda-envs/0e928867865a33c30f5b56c59e4b2684 --file /conda-envs/0e928867865a33c30f5b56c59e4b2684/environment.yaml && \
+    mamba clean --all -y
+
+RUN apt-get update && \
+    apt-get install -y build-essential
+
+RUN wget http://guidance.tau.ac.il/guidance.v2.02.tar.gz && \
+    tar -xzvf guidance.v2.02.tar.gz && \
+    cd guidance.v2.02 && \
+    make && \
+    chmod +x www/* && \
+    cd .. && \
+    rm guidance.v2.02.tar.gz && \
+    pwd
+
+ENV PATH="/guidance.v2.02/www:${PATH}"
