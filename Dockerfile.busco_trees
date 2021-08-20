@@ -33,6 +33,7 @@ RUN wget http://guidance.tau.ac.il/guidance.v2.02.tar.gz && \
     make && \
     chmod +x www/* && \
     chmod +x www/Guidance/* && \
+    for f in $(find www/ -type f -name "*.pl"); do sed -i '1s/.*/#!\/usr\/bin\/env perl/' $f ; done && \
     cd .. && \
     rm guidance.v2.02.tar.gz && \
     pwd
