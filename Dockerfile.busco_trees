@@ -32,8 +32,9 @@ RUN wget http://guidance.tau.ac.il/guidance.v2.02.tar.gz && \
     cd guidance.v2.02 && \
     make && \
     chmod +x www/* && \
+    chmod +x www/Guidance/* && \
     cd .. && \
     rm guidance.v2.02.tar.gz && \
     pwd
 
-ENV PATH="/guidance.v2.02/www:${PATH}"
+ENV PATH="/guidance.v2.02/www/Guidance:${PATH}"
