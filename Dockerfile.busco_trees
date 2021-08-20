@@ -6,7 +6,7 @@ LABEL io.github.snakemake.conda_env_hash="8eea06161935a86a9d07ff5de44d79371fae31
 
 # Conda environment:
 #   source: envs/busco_trees.yml
-#   prefix: /conda-envs/0e928867865a33c30f5b56c59e4b2684
+#   prefix: /conda-envs/b0c8294c423c389b94d1272a93ee6c64
 #   channels:
 #     - conda-forge
 #     - bioconda
@@ -16,12 +16,12 @@ LABEL io.github.snakemake.conda_env_hash="8eea06161935a86a9d07ff5de44d79371fae31
 #     - mafft
 #     - perl-bioperl
 #     - raxml
-RUN mkdir -p /conda-envs/0e928867865a33c30f5b56c59e4b2684
-COPY envs/busco_trees.yml /conda-envs/0e928867865a33c30f5b56c59e4b2684/environment.yaml
+RUN mkdir -p /conda-envs/b0c8294c423c389b94d1272a93ee6c64
+COPY envs/busco_trees.yml /conda-envs/b0c8294c423c389b94d1272a93ee6c64/environment.yaml
 
 # Step 2: Generate conda environments
 
-RUN mamba env create --prefix /conda-envs/0e928867865a33c30f5b56c59e4b2684 --file /conda-envs/0e928867865a33c30f5b56c59e4b2684/environment.yaml && \
+RUN mamba env create --prefix /conda-envs/b0c8294c423c389b94d1272a93ee6c64 --file /conda-envs/b0c8294c423c389b94d1272a93ee6c64/environment.yaml && \
     mamba clean --all -y
 
 RUN apt-get update && \
