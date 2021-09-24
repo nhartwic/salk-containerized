@@ -27,15 +27,21 @@ RUN mamba env create --prefix /conda-envs/b0c8294c423c389b94d1272a93ee6c64 --fil
 RUN apt-get update && \
     apt-get install -y build-essential
 
-RUN wget http://guidance.tau.ac.il/guidance.v2.02.tar.gz && \
-    tar -xzvf guidance.v2.02.tar.gz && \
-    cd guidance.v2.02 && \
-    make && \
-    chmod +x www/* && \
-    chmod +x www/Guidance/* && \
-    for f in $(find www/ -type f -name "*.pl"); do sed -i '1s/.*/#!\/usr\/bin\/env perl/' $f ; done && \
-    cd .. && \
-    rm guidance.v2.02.tar.gz && \
-    pwd
+RUN wget https://github.com/stamatak/standard-RAxML/archive/v8.2.12.tar.gz && \
+  tar -xvf v8.2.12.tar.gz && \
+  rm -rf v8.2.12.tar.gz && \
+  cd standard-RAxML-8.2.12/ && \
+  make -f Makefile.gcc && \
+  rm *.o && \
+  make -f Makefile.SSE3.gcc && \
+  rm *.o && \
+  make -f Makefile.AVX.gcc && \
+  rm *.o && \
+  make -f Makefile.PTHREADS.gcc && \
+  rm *.o && \
+  make -f Makefile.SSE3.PTHREADS.gcc && \
+  rm *.o && \
+  make -f Makefile.AVX.PTHREADS.gcc && \
+  rm *.o
 
-ENV PATH="/guidance.v2.02/www/Guidance:${PATH}"
+  ENV PATH="${PATH}:/standard-RAxML-8.2.12
