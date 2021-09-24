@@ -44,4 +44,4 @@ RUN wget https://github.com/stamatak/standard-RAxML/archive/v8.2.12.tar.gz && \
   make -f Makefile.AVX.PTHREADS.gcc && \
   rm *.o
 
-  ENV PATH="${PATH}:/standard-RAxML-8.2.12
+  ENV PATH="${PATH}:/standard-RAxML-8.2.12"
